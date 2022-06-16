@@ -23,6 +23,7 @@ public class JedisConfiguration {
     @Bean
     public JedisPool jedisPool() {
         JedisPoolConfig config = new JedisPoolConfig();
+        config.setJmxEnabled(false);
         return new JedisPool(config, hostName, port);
     }
 
