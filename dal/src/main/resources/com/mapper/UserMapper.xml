@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserMapper">
+    <!-- mapper文件必须跟mapper接口处于相同的包下面-->
+    <sql id="baseSearch">
+        id
+                , userName
+    </sql>
+
+    <select id="fetchUserInfo" resultType="com.domain.User">
+        select
+        <include refid="baseSearch"/>
+        from
+        user
+        where id = #{uid}
+    </select>
+</mapper>

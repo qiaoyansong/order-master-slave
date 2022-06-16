@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- [业务日志] 控制台, 兜底日志，没有指定logger的日志打到这里 -->
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- [业务日志] error.log, 汇总所有ERROR日志 -->
+    <appender name="errorLoggerAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/error.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- [业务日志] warn.log, 汇总所有WARN日志 -->
+    <appender name="warnLoggerAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/warn.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- [业务] 服务层日志 -->
+    <appender name="serviceAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/service.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+    <!-- [业务] 服务层日志 -->
+    <appender name="bizServiceAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/biz-service.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+    <!-- [业务] 通用层日志 -->
+    <appender name="commonAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/common.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+    <!-- [业务] 防腐层日志 -->
+    <appender name="integrationAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/integration.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+
+    <!-- [业务] 流量比较大的日志，同步打印 -->
+    <appender name="hotSpotAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/didiouter.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+    <!-- [业务] 流量比较大的日志，异步打印 -->
+    <appender name="hotSpotAsyncAppender" class="org.apache.log4j.AsyncAppender">
+        <param name="bufferSize" value="8192"/>
+        <param name="blocking" value="false"/>
+        <appender-ref ref="hotSpotAppender"/>
+    </appender>
+
+    <!-- [业务] redis日志，同步打印 -->
+    <appender name="redisAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="/tmp/log/redis.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %m%n"/>
+        </layout>
+        <filter class="com.log4j.WarnAndErrorFilter"/>
+    </appender>
+
+    <!-- [业务] redis日志，异步打印 -->
+    <appender name="redisAsyncAppender" class="org.apache.log4j.AsyncAppender">
+        <param name="bufferSize" value="8192"/>
+        <param name="blocking" value="false"/>
+        <appender-ref ref="redisAppender"/>
+    </appender>
+
+    <logger name="serviceLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="serviceAppender"/>
+    </logger>
+    <logger name="bizServiceLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="bizServiceAppender"/>
+    </logger>
+    <logger name="commonLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="commonAppender"/>
+    </logger>
+    <logger name="integrationLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="integrationAppender"/>
+    </logger>
+    <logger name="errorLogger" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="errorLoggerAppender"/>
+    </logger>
+    <logger name="warnLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="warnLoggerAppender"/>
+    </logger>
+    <logger name="hotSpotAppender" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="hotSpotAppender"/>
+    </logger>
+    <logger name="hotSpotAsyncLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="hotSpotAsyncAppender"/>
+    </logger>
+    <logger name="redisLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="redisAppender"/>
+    </logger>
+    <logger name="redisAsyncLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="redisAsyncAppender"/>
+    </logger>
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="stdout"/>
+    </root>
+</log4j:configuration>
