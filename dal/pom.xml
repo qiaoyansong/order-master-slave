@@ -33,6 +33,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>${spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!--  https://blog.csdn.net/ITxiaofeixiang/article/details/108541618
+                          我这里排除是因为我是用的jdbc 但是没有按照Spring默认的方式配置数据源 导致
+                          spring以为我没配置 直接报错
+                    -->
+                    <groupId>com.zaxxer</groupId>
+                    <artifactId>HikariCP</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>

@@ -1,6 +1,7 @@
 package com.dal;
 
 import com.BaseTestApplication;
+import com.config.DataSourceConfig;
 import com.redis.RedisService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class TestJedis extends BaseTestApplication {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private DataSourceConfig dataSourceConfig;
+
     @Test
     public void testSet() {
         boolean b = redisService.set("test", "test");
@@ -25,6 +29,11 @@ public class TestJedis extends BaseTestApplication {
     public void testGet() {
         String s = redisService.get("test");
         System.out.println(s);
+    }
+
+    @Test
+    public void testDataSourceConfiguration() {
+        dataSourceConfig.getMasters();
     }
 
 }
