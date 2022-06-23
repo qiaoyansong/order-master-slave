@@ -9,9 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DataSourceContextHolder {
 
-    public static final String MASTER = "MASTER";
-    public static final String SLAVE = "SLAVE";
-
     private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<>();
 
     public static void setTargetDataSource(String dataSourceType) {
@@ -29,7 +26,13 @@ public class DataSourceContextHolder {
      * @return
      */
     public static String getTargetDataSource() {
-        return CONTEXT_HOLDER.get() == null ? MASTER : CONTEXT_HOLDER.get();
+        String dataSource;
+        if ((dataSource = CONTEXT_HOLDER.get()) == null) {
+            log.error("dataSource为空");
+            throw new NullPointerException();
+        } else {
+            return dataSource;
+        }
     }
 
     public static void removeTargetDataSource() {

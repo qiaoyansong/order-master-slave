@@ -13,9 +13,9 @@ public class DataSourceRouter extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        log.info("当前数据源为" + DataSourceContextHolder.getDataSourceType());
+        log.info("当前数据源为" + DataSourceContextHolder.getTargetDataSource());
         //返回选择的数据源
-        return DataSourceContextHolder.getDataSourceType();
+        return DataSourceContextHolder.getTargetDataSource();
     }
 }
 

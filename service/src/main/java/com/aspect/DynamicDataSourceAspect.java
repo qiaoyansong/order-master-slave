@@ -13,11 +13,14 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * @author ：Qiao Yansong
@@ -32,6 +35,8 @@ public class DynamicDataSourceAspect {
     @Autowired
     private DataSourceConfig dataSourceConfig;
 
+    private final ThreadLocalRandom random = ThreadLocalRandom.current();
+
     private ImmutableMap<String, Supplier<String>> executorMap = ImmutableMap.of(
             CommonConstant.MASTER, () -> chooseMasterDataSource(),
             CommonConstant.SLAVE, () -> chooseMasterDataSource()
@@ -43,8 +48,11 @@ public class DynamicDataSourceAspect {
      */
     @Before(value = "execution(* *(..)) && @annotation(selectDataSource)")
     public void before(JoinPoint point, SelectDataSource selectDataSource) {
-        log.info(point.getSignature().getName() + "走从库");
-        DataSourceContextHolder.setTargetDataSource(DataSourceContextHolder.SLAVE);
+        if(selectDataSource.isMaster()) {
+            DataSourceContextHolder.setTargetDataSource(chooseMasterDataSource());
+        } else {
+            DataSourceContextHolder.setTargetDataSource(chooseSlaveDataSource());
+        }
     }
 
     @After(value = "execution(* *(..)) && @annotation(selectDataSource)")
@@ -60,13 +68,14 @@ public class DynamicDataSourceAspect {
      */
     private String chooseMasterDataSource() {
         Map<String, Map<String, String>> masters = dataSourceConfig.getMasters();
-        Set<String> dsName = masters.keySet();
-        return dsName.
+        List<String> dsName = masters.keySet().stream().collect(Collectors.toList());
+        return dsName.get(random.nextInt(dsName.size()));
     }
 
     private String chooseSlaveDataSource() {
         Map<String, Map<String, String>> masters = dataSourceConfig.getSlaves();
-        Set<String> dsName = masters.keySet();
+        List<String> dsName = masters.keySet().stream().collect(Collectors.toList());
+        return dsName.get(random.nextInt(dsName.size()));
     }
 
 }
