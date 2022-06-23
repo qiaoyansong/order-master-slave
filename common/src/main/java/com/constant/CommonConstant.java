@@ -6,4 +6,9 @@ package com.constant;
  * description：通用常量配置
  */
 public class CommonConstant {
+
+    public static final String MASTER = "MASTER";
+
+    public static final String SLAVE = "SLAVE";
+
 }

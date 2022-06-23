@@ -1,6 +1,9 @@
 package com.config;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.alibaba.fastjson.JSON;
+import com.enums.ErrorEnum;
+import com.exception.BizException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
@@ -80,7 +83,11 @@ public class DataSourceConfig {
         }
         List<ImmutablePair<String, DataSource>> slaves = slaveDataSources();
         for (ImmutablePair<String, DataSource> pair : slaves) {
-            targetDataSources.put(pair.getLeft(), pair.getRight());
+            Object src = targetDataSources.put(pair.getLeft(), pair.getRight());
+            if(src != null) {
+                log.error("DataSourceConfig#routingDataSource already have the same name dataSource, name={} targetDataSources={}", JSON.toJSONString(pair.getLeft()), JSON.toJSONString(targetDataSources));
+                throw new BizException(ErrorEnum.INIT_ERROR.getCode(), ErrorEnum.INIT_ERROR.getMsg());
+            }
         }
         DataSourceRouter routingDataSource = new DataSourceRouter();
         routingDataSource.setTargetDataSources(targetDataSources);

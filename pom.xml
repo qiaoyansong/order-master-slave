@@ -30,6 +30,7 @@
         <lombok.version>1.18.22</lombok.version>
         <spring.version>5.3.13</spring.version>
         <jedis.version>4.1.1</jedis.version>
+        <aspectj.version>1.9.6</aspectj.version>
     </properties>
 
     <dependencyManagement>
@@ -103,6 +104,12 @@
                 <groupId>com.qiaoyansong</groupId>
                 <artifactId>order-master-slave-parent-api</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <!--  aspect -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

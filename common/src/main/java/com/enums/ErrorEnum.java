@@ -17,6 +17,8 @@ public enum ErrorEnum {
      */
     INNER_ERROR(20001, "内部错误"),
     INNER_ERROR_WITH_MSG(20001, "内部错误,错误信息为%s"),
+    INIT_ERROR(20002, "初始化错误"),
+    INIT_ERROR_WITH_MSG(20002, "初始化,错误信息为%s"),
 
     /**
      * 业务错误
