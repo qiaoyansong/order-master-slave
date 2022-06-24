@@ -20,9 +20,9 @@
 
         <!-- 必须要有的，使用这个配置链接数据库 @TODO:是否可以扩展 以下为数据库连接的四要素-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/test?serverTimeZone=GMT"
+                        connectionURL="jdbc:mysql://139.224.82.136:3308/order_db?serverTimezone=GMT"
                         userId="root"
-                        password="qiao683586890">
+                        password="Sharding@Slave#1202">
         </jdbcConnection>
 
         <!-- 生成domain对象 -->
@@ -31,7 +31,7 @@
         </javaModelGenerator>
 
         <!-- ===========================表名=================================================== -->
-        <table tableName="user" delimitIdentifiers="true" domainObjectName="User">
+        <table tableName="order_info" delimitIdentifiers="true" domainObjectName="OrderInfo">
             <!--使用真实列的名字 false不使用（默认 如果有下划线转为驼峰） true使用-->
             <property name="useActualColumnNames" value="false"/>
         </table>

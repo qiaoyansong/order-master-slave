@@ -6,6 +6,7 @@ import com.config.DataSourceContextHolder;
 import com.constant.CommonConstant;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -48,11 +46,16 @@ public class DynamicDataSourceAspect {
      */
     @Before(value = "execution(* *(..)) && @annotation(selectDataSource)")
     public void before(JoinPoint point, SelectDataSource selectDataSource) {
-        if(selectDataSource.isMaster()) {
-            DataSourceContextHolder.setTargetDataSource(chooseMasterDataSource());
+        if (StringUtils.isNotBlank(selectDataSource.dataSourceName())) {
+            DataSourceContextHolder.setTargetDataSource(selectDataSource.dataSourceName());
         } else {
-            DataSourceContextHolder.setTargetDataSource(chooseSlaveDataSource());
+            if (selectDataSource.isMaster()) {
+                DataSourceContextHolder.setTargetDataSource(chooseMasterDataSource());
+            } else {
+                DataSourceContextHolder.setTargetDataSource(chooseSlaveDataSource());
+            }
         }
+        log.info(point.getSignature().getName() + "数据源为{}", DataSourceContextHolder.getTargetDataSource());
     }
 
     @After(value = "execution(* *(..)) && @annotation(selectDataSource)")

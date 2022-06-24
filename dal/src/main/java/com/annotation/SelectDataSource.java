@@ -21,6 +21,6 @@ public @interface SelectDataSource {
     /**
      * 数据源名字，未填则随机选择
      */
-    String dataSourceName();
+    String dataSourceName() default "";
 
 }

@@ -1,6 +1,6 @@
 package com.mapper;
 
-import com.domain.User;
+import com.domain.OrderInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,10 +12,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     /**
-     * 查看用户信息
-     *
-     * @param uid 用户ID
-     * @return 用户信息
+     * 根据订单ID查询订单信息
+     * @param orderId 订单ID
+     * @return
      */
-    User fetchUserInfo(Integer uid);
+    OrderInfo queryUserOrderInfo(Integer orderId);
+
 }

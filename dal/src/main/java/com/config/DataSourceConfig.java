@@ -19,10 +19,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author ：Qiao Yansong
@@ -65,8 +65,8 @@ public class DataSourceConfig {
         if (MapUtils.isEmpty(slaves)) {
             throw new Exception("从库数据源不能为空");
         }
-        List<ImmutablePair<String, DataSource>> result = Lists.newArrayListWithExpectedSize(masters.size());
-        for (Map.Entry<String, Map<String, String>> entrys : masters.entrySet()) {
+        List<ImmutablePair<String, DataSource>> result = Lists.newArrayListWithExpectedSize(slaves.size());
+        for (Map.Entry<String, Map<String, String>> entrys : slaves.entrySet()) {
             result.add(ImmutablePair.of(entrys.getKey(), DruidDataSourceFactory.createDataSource(entrys.getValue())));
         }
         return result;
@@ -91,7 +91,8 @@ public class DataSourceConfig {
         }
         DataSourceRouter routingDataSource = new DataSourceRouter();
         routingDataSource.setTargetDataSources(targetDataSources);
-        routingDataSource.setDefaultTargetDataSource(masters);
+        // 查看源代码可知默认数据源只支持一个 因此get(0) org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource.afterPropertiesSet
+        routingDataSource.setDefaultTargetDataSource(masters.stream().map(ImmutablePair::getRight).collect(Collectors.toList()).get(0));
         return routingDataSource;
     }
 
