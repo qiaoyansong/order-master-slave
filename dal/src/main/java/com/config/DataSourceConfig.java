@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * @author ：Qiao Yansong
  * @date ：Created in 2022/6/16 9:13 下午
- * description：数据源配置
+ * description：数据源配置 使用ConfigurationProperties需要提供get set方法
  */
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource")
